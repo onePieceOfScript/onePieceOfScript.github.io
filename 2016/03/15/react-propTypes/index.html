@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<title>
+  
+    React.PropTypes 源码分析
+  
+</title>
+
+<meta name="description" content="该对象在ReactPropTypes模块中定义，包含了一系列对于 props 的验证方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React.PropTypes 源码分析">
+<meta property="og:url" content="http://yoursite.com/2016/03/15/react-propTypes/index.html">
+<meta property="og:site_name" content="One Piece Of Script">
+<meta property="og:description" content="该对象在ReactPropTypes模块中定义，包含了一系列对于 props 的验证方法。">
+<meta property="og:updated_time" content="2016-03-16T07:07:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React.PropTypes 源码分析">
+<meta name="twitter:description" content="该对象在ReactPropTypes模块中定义，包含了一系列对于 props 的验证方法。">
+
+
+  <link rel="alternative" href="/atom.xml" title="One Piece Of Script" type="application/atom+xml">
+
+
+
+  <link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="/styles/main.css">
+
+
+
+
+
+
+</head>
+<body
+  
+    class="monochrome"
+  
+  >
+  <div class="mobile-header">
+  <button class="sidebar-toggle" type="button">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a class="title" href="/">One Piece Of Script</a>
+</div>
+
+  <div class="main-container">
+    <div class="sidebar">
+  <div class="header">
+    <h1 class="title"><a href="/">One Piece Of Script</a></h1>
+    
+      <p class="subtitle">
+        meke world more fun
+      </p>
+    
+    <div class="info">
+      <div class="content">
+       
+          <div class="author">Tony Wang</div>
+        
+        
+          <div class="description">to share worth to share</div>
+        
+        
+      </div>
+      
+        <div class="avatar">
+          
+            <a href="/about"><img src="/saber.png"></a>
+          
+        </div>
+      
+    </div>
+  </div>
+  <div class="body">
+    
+      
+        <ul class="nav">
+          
+            
+              <li>
+                <a href="/" title="Homepage">Homepage</a>
+              </li>
+            
+          
+            
+              <li>
+                <a href="/archives" title="By Year">By Year</a>
+              </li>
+            
+          
+        </ul>
+      
+        <ul class="nav">
+          
+            
+              <li>
+                <a href="https://github.com/wt911122" title="Github" target="_blank" rel="external">Github</a>
+              </li>
+            
+          
+        </ul>
+      
+    
+  </div>
+</div>
+
+    <div class="main-content">
+      
+        <div style="max-width: 1000px">
+      
+          <article id="post-react-propTypes" class="article article-type-post">
+  
+    <h1 class="article-header">
+      React.PropTypes 源码分析
+    </h1>
+  
+  
+
+  <div class="article-info">
+    <span class="article-date">
+  2016-03-15
+</span>
+
+    
+
+    
+
+  </div>
+  <div class="article-entry">
+    <p>该对象在ReactPropTypes模块中定义，包含了一系列对于 props 的验证方法。<br><a id="more"></a></p>
+<hr>
+<h2 id="模块使用示例"><a href="#模块使用示例" class="headerlink" title="模块使用示例"></a>模块使用示例</h2><p>以下引用了 React 源码中的注释部分，已翻译为中文。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Props = <span class="built_in">require</span>(<span class="string">'ReactPropTypes'</span>);</span><br><span class="line"><span class="keyword">var</span> MyArticle = React.createClass(&#123;</span><br><span class="line">    propTypes: &#123;</span><br><span class="line">        <span class="comment">// 模块名称，可选</span></span><br><span class="line">        description: Props.string,</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 一个必须的枚举类型property</span></span><br><span class="line">        category: Props.oneOf([<span class="string">'News'</span>,<span class="string">'Photos'</span>]).isRequired,</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这个参数必须是Dialog的实例</span></span><br><span class="line">        dialog: Props.instanceOf(Dialog).isRequired</span><br><span class="line">    &#125;,</span><br><span class="line">    render: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>更加正式的定义：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)</span><br><span class="line">decl := ReactPropTypes.&#123;type&#125;(.isRequired)?</span><br></pre></td></tr></table></figure></p>
+<p>每个声明都会产生一个具有相同特征的方法（这里应该理解为实现了同一个接口），所以这里可以自定义验证方法，例如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> MyLink = React.createClass(&#123;</span><br><span class="line">    propTypes: &#123;</span><br><span class="line">        href: <span class="function"><span class="keyword">function</span>(<span class="params">props, propName, componentName</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> propValue = props[propName];</span><br><span class="line">            <span class="keyword">if</span> (propValue != <span class="literal">null</span> &amp;&amp; <span class="keyword">typeof</span> propValue !== <span class="string">'string'</span> &amp;&amp;</span><br><span class="line">                !(propValue <span class="keyword">instanceof</span> URI)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</span><br><span class="line">                    <span class="string">'Expected a string or an URI for '</span> + propName + <span class="string">' in '</span> + componentName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    render: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;...&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>以下是ReactPropTypes定义的静态对象和方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ReactPropTypes = &#123;</span><br><span class="line">    array: createPrimitiveTypeChecker(<span class="string">'array'</span>),</span><br><span class="line">    bool: createPrimitiveTypeChecker(<span class="string">'boolean'</span>),</span><br><span class="line">    func: createPrimitiveTypeChecker(<span class="string">'function'</span>),</span><br><span class="line">    number: createPrimitiveTypeChecker(<span class="string">'number'</span>),</span><br><span class="line">    object: createPrimitiveTypeChecker(<span class="string">'object'</span>),</span><br><span class="line">    string: createPrimitiveTypeChecker(<span class="string">'string'</span>),</span><br><span class="line"></span><br><span class="line">    any: createAnyTypeChecker(),</span><br><span class="line">    arrayOf: createArrayOfTypeChecker,</span><br><span class="line">    element: createElementTypeChecker(),</span><br><span class="line">    instanceOf: createInstanceTypeChecker,</span><br><span class="line">    node: createNodeChecker(),</span><br><span class="line">    objectOf: createObjectOfTypeChecker,</span><br><span class="line">    oneOf: createEnumTypeChecker,</span><br><span class="line">    oneOfType: createUnionTypeChecker,</span><br><span class="line">    shape: createShapeTypeChecker</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="具体技术细节"><a href="#具体技术细节" class="headerlink" title="具体技术细节"></a>具体技术细节</h2><p>先总的来看看上面出现过的所有的方法的实现，这些方法都遵循一种特征：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createXXXChecker</span>(<span class="params">expected</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">validate</span>(<span class="params">props, propName, componentName, location, propFullName</span>) </span>&#123;...&#125;</span><br><span class="line">    <span class="keyword">return</span> createChainableTypeChecker(validate);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么这个createChainableTypeChecker方法做了些什么呢？<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createChainableTypeChecker</span>(<span class="params">validate</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">checkType</span>(<span class="params">isRequired, props, propName, componentName, location, propFullName</span>) </span>&#123;</span><br><span class="line">        componentName = componentName || ANONYMOUS;</span><br><span class="line">        propFullName = propFullName || propName;</span><br><span class="line">        <span class="keyword">if</span> (props[propName] == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> locationName = ReactPropTypeLocationNames[location];</span><br><span class="line">            <span class="keyword">if</span> (isRequired) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Required '</span> + locationName + <span class="string">' `'</span> + propFullName + <span class="string">'` was not specified in '</span> + (<span class="string">'`'</span> + componentName + <span class="string">'`.'</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> validate(props, propName, componentName, location, propFullName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> chainedCheckType = checkType.bind(<span class="literal">null</span>, <span class="literal">false</span>);</span><br><span class="line">    chainedCheckType.isRequired = checkType.bind(<span class="literal">null</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> chainedCheckType;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法接受了一个函数作为输入，这个函数就是在createXXXChecker(expected)定义过得validate函数，其具有5个参数，是用来进一步验证输入值的。<br>该方法可返回一个函数对象，该函数对象自身是一个函数体，同时还带有一个isRequired的对象，这两个对象同时具有checkType的函数体，只是以isRequired参数作区分。这里不得不提到bind的使用方法。<br>很多人已经知道bind的第一个参数可以用来绑定作用域，该参数不能被重写，来创建一个指定作用域下的函数对象。但是bind在这里还有另外一个重要的功能，使一个函数拥有预设的初始参数，这些参数（如果有的话）作为bind()的第二个参数跟在this（或其他对象）后面，之后它们会被插入到目标函数的参数列表的开始位置，传递给绑定函数的参数会跟在它们的后面。（摘自MDN）<br>所以创建的函数依然满足validate的形式。checkType做的更多的是空检查和检查props是否isRequired。</p>
+<p>接下来就是分别实现各种不同情况的验证了。<br>这里使用的时候只需要注意，基本类型不用传值，函数像instanceof、arrayof等都需要传递一个验证目标值。具体验证细节不再赘述了。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>该模块实现了props类型验证的辅助功能，createChainableTypeChecker就像是一层包装，将所有验证方法相同的细节都包装起来，在真正的验证方法运行前先执行了。这种实现非常优雅，充分做到了解耦和。</p>
+
+  </div>
+  <footer class="article-footer">
+    
+  <div class="cc">
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/deed.z" target="_blank" title="Attribution-ShareAlike">
+      <img src="/images/cc/cc.png">
+      
+          <img src="/images/cc/by.png">
+        
+          <img src="/images/cc/sa.png">
+      
+      <span>
+        This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+      </span>
+    </a>
+  </div>
+
+
+    
+
+  </footer>
+</article>
+
+
+
+
+
+
+
+          <div class="main-footer">
+  
+    © 2016 One Piece Of Script - Powered by <a href="http://hexo.io" target="_blank">Hexo</a> - Theme <a href="https://github.com/denjones/hexo-theme-chan" target="_blank">Chan</a>
+  
+</div>
+
+      
+        </div>
+      
+    </div>
+  </div>
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="/PhotoSwipe/photoswipe.css">
+  <link rel="stylesheet" href="/PhotoSwipe/default-skin/default-skin.css">
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+  <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+             It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+      <!-- Container that holds slides.
+                PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                Don't modify these 3 pswp__item elements, data is added later on. -->
+      <div class="pswp__container">
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+      </div>
+
+      <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+      <div class="pswp__ui pswp__ui--hidden">
+
+        <div class="pswp__top-bar">
+
+          <!--  Controls are self-explanatory. Order can be changed. -->
+
+          <div class="pswp__counter"></div>
+
+          <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+          <button class="pswp__button pswp__button--share" title="Share"></button>
+
+          <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+          <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+          <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+          <!-- element will get class pswp__preloader--active when preloader is running -->
+          <div class="pswp__preloader">
+            <div class="pswp__preloader__icn">
+              <div class="pswp__preloader__cut">
+                <div class="pswp__preloader__donut"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+          <div class="pswp__share-tooltip"></div>
+        </div>
+
+        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+
+        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+        <div class="pswp__caption">
+          <div class="pswp__caption__center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/PhotoSwipe/photoswipe.js"></script>
+  <script src="/PhotoSwipe/photoswipe-ui-default.js"></script>
+
+
+<script src="/scripts/main.js"></script>
+
+</body>
+</html>
