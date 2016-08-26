@@ -13,6 +13,7 @@
 
 body {
     font-family: "Times New Roman", "方正书宋简体", "宋体",  Times, serif;
+
     color: #555;
 }
 
@@ -22,6 +23,9 @@ body {
 
 *[lang=cn-head]{
     font-family: "方正兰亭黑简", "黑体", "Times New Roman", Times, serif;
+}
+article[lang=cn] p{
+    text-indent: 2em;
 }
 
 h1, .h1,
@@ -46,6 +50,16 @@ body{
     }
 }
 
+table {
+    background: 0 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+}
+table td {
+    border-bottom: 1px solid #e3eaf4;
+    padding: 1rem 0;
+}
 
 a.link{
     color:#333; 
@@ -242,6 +256,56 @@ a.link.underlinelink:hover{
     font-size: 12px;
     bottom: 0;
     right: 0;
+}
+
+/*
+ * blog artical
+ */
+.blog-article{
+    padding: 15px;
+    background-color: rgba(252,252,245,0.85)
+}
+figure.highlight {
+    background: #fff;
+    margin: 10px 0;
+    border-radius: 3px;
+    line-height: 1.2em;
+    color: #333;
+    border: 1px solid #d9d9d9;
+    overflow: hidden;
+}
+figure.highlight table {
+    display: block;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+figure.highlight .code, 
+figure.highlight .gutter, 
+figure.highlight .tag, 
+figure.highlight pre {
+    font-family: Menlo;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: text;
+    background-color: transparent;
+}
+figure.highlight .gutter {
+    background: #fff;
+    border-right: 1px solid #d9d9d9;
+    padding: .3em .5em;
+}
+figure.highlight .code {
+    padding: .3em .3em .3em 1em;
+}
+figure.highlight .gutter .line {
+    color: #aaa;
+}
+figure.highlight .line {
+    height: 1.2em;
+    font-size: 1.3rem;
 }
 
 

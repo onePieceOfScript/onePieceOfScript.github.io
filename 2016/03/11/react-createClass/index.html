@@ -35,19 +35,27 @@
 </div>
 
 		
+
+ <div class="container" >
+    <div class="row">
+        <div class="col-sm-12 jumbotron blog-jumbotron blog-block">
+            <h1 lang="en">React.createClass(specs)源码分析</h1>
+                
+                <span class="meta">
+                    <!-- Date and Author -->
+                    
+                    2016-03-11
+                </span>
+        </div>
+    </div>
+</div>
 <!-- Post Content -->
-<article>
+<article lang="cn">
     <div class="container">
         <div class="row">
 
-            <!-- Tags and categories -->
-           
-
-            <!-- Gallery -->
-            
-
             <!-- Post Main Content -->
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="col-sm-12 blog-block blog-article">
                 <p>使用React的前端开发者一定知道这个方法，它是最常用的用来快速构建React Component的方法。本文从源码出发分析这个方法。</p>
 <a id="more"></a>
 <hr>
@@ -71,16 +79,8 @@
 <p>最后将在ReactClassInterface中却在原型中没有被赋值的方法都赋上null。<br>函数最后返回Constructor函数</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>通过对 React.createClass(specs) 的分析，我们可以发现，组件的Constructor上可用的方法分为静态和原型两种，静态的方法主要定义了一些静态变量的mixin法则，原型方法主要都是一些和组件生命周期相关的函数，对这些混合法则的深入理解将有利于构建更加好用的mixin和组件。</p>
 
-
-                
             </div>
 
-            <!-- Comments -->
-            
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    
-                </div>
-            
         </div>
     </div>
 </article>
