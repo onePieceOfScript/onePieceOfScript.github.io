@@ -1,0 +1,87 @@
+<html>
+
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="">
+	<title>something</title>
+
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/blog.css">
+
+ 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+	<body>
+		<!-- Menu -->
+		<div class="blog-jumbotron-bg">
+	<div class="blog-masthead">
+	    <div class="container">
+	        <nav class="blog-nav" lang="cn-head">
+	            
+	                <a class="blog-nav-item" href="/">首页</a>
+	            
+	                <a class="blog-nav-item" href="/archives">文档</a>
+	            
+	        </nav>
+	    </div>
+	</div>
+</div>
+
+		
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>很多人在学习图像处理的时候都会碰到傅里叶变换，这是频域图像处理的基础，但由于各种资料及论文介绍的太过学术，公式完全就不想让人看懂的样子，复杂到让人望而生畏。但其实这玩意就是个程序化的东西，在数字图像处理中，并不需要非常清楚具体傅里叶变换是怎么变得，我们只需要知道这是个黑盒，输入图像，然后变换到频域，展现频谱，对频谱分析处理，用所谓的滤波器去掉我们不需要的部分，然后再通过这个黑盒变回来就结束了。</p>
+<a id="more"></a>
+<hr>
+<h2 id="下面来具体介绍这是个啥玩意："><a href="#下面来具体介绍这是个啥玩意：" class="headerlink" title="下面来具体介绍这是个啥玩意："></a>下面来具体介绍这是个啥玩意：</h2><p>先上公式：</p>
+<p>这两个公式正是正变换和逆变换的公式，单从公式上来看，就是把图像f上对应的每个像素f(x,y)与后面那一串expXXX的做了一个卷积，但这玩意计算复杂度太大了，大概是O(n^4)，如果大一点的图片比如1000*800，那可以算好几天。。。<br>所以后来有人发明了快速傅里叶变换(FFT)，不用管这玩意是怎么实现，我们只要在心里佩服下这位仁兄，然后直接拿来用就可以了，和这两个公式做到的事情是一样的。<br>另外还有一组对应关系很重要：</p>
+<p>这组关系说的就是空域的卷积相当于频域的乘积，反过来也成立，这个不得了了~我们可以用这个干很多事情，比如在频域对变换过的图像做一些操作，再返回空域，就会产生不同的效果。暂且不管什么操作对应什么效果，我们先可以玩起来。</p>
+<h2 id="显示频谱"><a href="#显示频谱" class="headerlink" title="显示频谱"></a>显示频谱</h2><p>因为MATLAB中的fft变换默认把频域结果设置在[0,pi]，所以我们需要调用fftshift()把中心移动到频谱图像中心，这样显示起来比较直观，<br>所以后面所提到的滤波器里面的距离都是距离图像中心的距离（很关键！）。要在图像上显示频谱，需要获取傅里叶变换后单点的幅度，就用read与imag函数提取变换后的实部和虚部（感谢欧拉），然后取模，就是频谱，当然频谱不会在[0，255]，所以需要做归一化到[0，255]，然后就能以图像来显示了。通过观察频谱，中间的部分表示低频区域，越向外围越是高频区域。先不管低频和高频到底是个什么玩意，我们先可以玩起来。</p>
+<h2 id="设置滤波器"><a href="#设置滤波器" class="headerlink" title="设置滤波器"></a>设置滤波器</h2><p>现在已经绘制出了频谱，那么我们对频谱来操作，最简单的理想低通滤波，就是截断一定区域的频谱，比如我们只需要距中心20的频谱，那么其余大于20的部分全部都为0，这样我们就完成了第一个滤波器。还记得那个很重要的关系么？我们将这个滤波器和频谱直接想乘，再看下频谱，是不是外围都变黑了，只留下中心部分了。</p>
+<h2 id="变换回空域"><a href="#变换回空域" class="headerlink" title="变换回空域"></a>变换回空域</h2><p>在变回空域之前，需要先将中心再平移回原来的位置，这个交给ifftshift()。然后再用傅里叶反变换就可以把图片变回来。处理过的图像变得模糊不清，并且在大目标边缘有很多波纹的感觉，这就是传说中的振铃效应，细想一下还真的挺像的。</p>
+<h2 id="以上，就是一个基本的傅里叶变换加滤波的流程"><a href="#以上，就是一个基本的傅里叶变换加滤波的流程" class="headerlink" title="以上，就是一个基本的傅里叶变换加滤波的流程"></a>以上，就是一个基本的傅里叶变换加滤波的流程</h2><h2 id="另外附上所有代码"><a href="#另外附上所有代码" class="headerlink" title="另外附上所有代码"></a>另外附上所有代码</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br><span class="line">clc</span><br><span class="line">close all;</span><br><span class="line">I = imread(<span class="string">'lena.jpeg'</span>);</span><br><span class="line">I = rgb2gray(I);</span><br><span class="line">figure;imshow(I);</span><br><span class="line"><span class="comment">% convert to double</span></span><br><span class="line">ID = im2double(I);</span><br><span class="line"><span class="comment">%  transform to frequency domain</span></span><br><span class="line"><span class="comment">%% --------转到频域，并将中心移至图像中心-------</span></span><br><span class="line">FID = fft2(ID);</span><br><span class="line">FS = fftshift(FID);</span><br><span class="line">showFrequency(FS);</span><br><span class="line"><span class="comment">%% --------理想低通滤波--------</span></span><br><span class="line"><span class="comment">% H = 1 if D(x,y) &lt; D0</span></span><br><span class="line"><span class="comment">% H = 0 if D(x,y) &gt; D0</span></span><br><span class="line">[m,n] = <span class="built_in">size</span>(FS);</span><br><span class="line">IdealFS = FS.* idealLowPass(m,n, <span class="number">20</span>);</span><br><span class="line">showFrequency(IdealFS);</span><br><span class="line"><span class="comment">%% --------巴特沃斯低通滤波器--------</span></span><br><span class="line"><span class="comment">% H = 1 / (1 + (D(x, y)/D0) ^ 2n)</span></span><br><span class="line"></span><br><span class="line">[m,n] = <span class="built_in">size</span>(FS);</span><br><span class="line">ButterworthFS = FS.* ButterworthLowPass(m, n, <span class="number">50</span>, <span class="number">1</span>);</span><br><span class="line">showFrequency(ButterworthFS);</span><br><span class="line"></span><br><span class="line"><span class="comment">%% --------高斯低通滤波器--------</span></span><br><span class="line">[m,n] = <span class="built_in">size</span>(FS);</span><br><span class="line">GaussianFS = FS.* GaussianLowPass(m, n, <span class="number">10</span>);</span><br><span class="line">showFrequency(GaussianFS);</span><br><span class="line"></span><br><span class="line"><span class="comment">%% --------将中心移回，转回空域，-------</span></span><br><span class="line">FS = ifftshift(GaussianFS);</span><br><span class="line"><span class="comment">%showFrequency(FS);</span></span><br><span class="line">IFID = ifft2(FS);</span><br><span class="line"><span class="comment">% convert back to uint8</span></span><br><span class="line">I8 = im2uint8(IFID);</span><br><span class="line">figure;imshow(I8);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mat</span> = <span class="title">idealLowPass</span><span class="params">(M, N, D)</span></span></span><br><span class="line">    mat = <span class="built_in">zeros</span>(M,N);</span><br><span class="line">    <span class="keyword">for</span> r = <span class="number">1</span>:M</span><br><span class="line">        <span class="keyword">for</span> c = <span class="number">1</span>:N</span><br><span class="line">            <span class="keyword">if</span> (r- M/<span class="number">2</span>)^<span class="number">2</span>  + (c- N/<span class="number">2</span>)^<span class="number">2</span> &lt; D^<span class="number">2</span></span><br><span class="line">                mat(r,c)=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showFrequency</span><span class="params">(FS)</span></span></span><br><span class="line">RR = <span class="built_in">real</span>(FS);</span><br><span class="line">II = <span class="built_in">imag</span>(FS);</span><br><span class="line">A = <span class="built_in">sqrt</span>(RR.^<span class="number">2</span> + II.^<span class="number">2</span>);</span><br><span class="line">A = (A - min(A(:))) / (max(A(:) - min(A(:)))) * <span class="number">255</span>;</span><br><span class="line">figure; imshow(A);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mat</span> = <span class="title">ButterworthLowPass</span><span class="params">(M,N,D_0,n)</span></span></span><br><span class="line">    mat = <span class="built_in">zeros</span>(M,N);</span><br><span class="line">    <span class="keyword">for</span> r = <span class="number">1</span>:M</span><br><span class="line">        <span class="keyword">for</span> c = <span class="number">1</span>:N</span><br><span class="line">            D = <span class="built_in">sqrt</span>((r- M/<span class="number">2</span>)^<span class="number">2</span>  + (c- N/<span class="number">2</span>)^<span class="number">2</span>);</span><br><span class="line">            mat(r,c) = <span class="number">1</span> / (<span class="number">1</span> + (D/D_0)^(<span class="number">2</span>*n));</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mat</span> = <span class="title">GaussianLowPass</span><span class="params">(M, N, D_0)</span></span></span><br><span class="line">    mat = <span class="built_in">zeros</span>(M,N);</span><br><span class="line">    <span class="keyword">for</span> r = <span class="number">1</span>:M</span><br><span class="line">        <span class="keyword">for</span> c = <span class="number">1</span>:N</span><br><span class="line">            D = <span class="built_in">sqrt</span>((r- M/<span class="number">2</span>)^<span class="number">2</span>  + (c- N/<span class="number">2</span>)^<span class="number">2</span>);</span><br><span class="line">            mat(r,c) = <span class="built_in">exp</span>(-D^<span class="number">2</span> / (<span class="number">2</span>*D_0^<span class="number">2</span>));</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+                </div>
+            
+        </div>
+    </div>
+</article>
+		<footer class="blog-footer">
+    <p lang="en"> 
+        Copyrights © 2016 Tony Wang. All Rights Reserved.
+    </p>
+</footer>
+		<!-- fter footer script-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+	</body>
+</html>

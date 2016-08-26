@@ -1,0 +1,260 @@
+/*
+ * Globals
+ */
+
+@font-face{
+    font-family: "方正兰亭黑简";
+    src: url("./方正兰亭黑简.TTF");
+ }
+@font-face{
+    font-family: "方正书宋简体";
+    src: url("./方正书宋简体.TTF");
+ }
+
+body {
+    font-family: "Times New Roman", "方正书宋简体", "宋体",  Times, serif;
+    color: #555;
+}
+
+*[lang=en]{
+    font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+*[lang=cn-head]{
+    font-family: "方正兰亭黑简", "黑体", "Times New Roman", Times, serif;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+    margin-top: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    color: #333;
+}
+
+body{
+    background: url(../img/harvest-big2.jpg) center top / 100vw auto no-repeat fixed,
+                linear-gradient(90deg, hsl(24, 20%, 87%) 1px, hsl(24, 20%, 95%)) -3px no-repeat;
+}
+@media (max-width: 1200px){
+    body{
+        background-size: auto 100vh;
+    }
+}
+
+
+a.link{
+    color:#333; 
+    transition: all 0.3s;
+    cursor: pointer;
+}
+a.link:active,
+a.link:focus{
+    text-decoration: none;
+}
+a.link:hover{
+    text-decoration: none; 
+    text-shadow: 0 1px 5px hsla(0,0%,100%,.6);
+}
+a.link.underlinelink:active,
+a.link.underlinelink:focus,
+a.link.underlinelink:hover{
+    text-decoration: underline;
+}
+.blog-jumbotron-bg{
+    background-color: #fff;
+    background:transparent;
+}
+.blog-block,
+.blog-jumbotron{
+    background-color: transparent;
+    position: relative;
+    color: #333;
+    background: hsla(0,0%,100%,.25) border-box;
+    overflow: hidden;
+    border-radius: .3em;
+    box-shadow: 0 0 0 1px hsla(0,0%,100%,.3) inset,
+                0 .5em 1em rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 1px hsla(0,0%,100%,.3);
+}
+
+/*
+ * Override Bootstrap's default container.
+ */
+
+@media (min-width: 1200px) {
+    .container {
+        width: 970px;
+    }
+}
+
+/*
+ * Masthead for nav
+ */
+
+.blog-masthead {
+     background: hsla(0,0%,100%,.25) border-box;
+    -webkit-box-shadow: 0 0px 5px rgba(0,0,0,.1);
+    box-shadow: 0 0px 5px rgba(0,0,0,.1);
+    margin-bottom: 10px;
+}
+
+/* Nav links */
+.blog-nav-item {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+}
+.blog-nav-item:hover,
+.blog-nav-item:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Active state gets a caret at the bottom */
+.blog-nav .active {
+    color: #fff;
+}
+.blog-nav .active:after {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    margin-left: -5px;
+    vertical-align: middle;
+    content: " ";
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid;
+    border-left: 5px solid transparent;
+}
+
+
+/*
+ * Blog name and description
+ */
+
+.blog-header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.blog-title {
+    margin-top: 30px;
+    margin-bottom: 0;
+    font-size: 60px;
+    font-weight: normal;
+}
+.blog-description {
+    font-size: 20px;
+    color: #999;
+}
+
+
+/*
+ * Main column and sidebar layout
+ */
+
+.blog-main {
+    background: transparent;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 0.3em;
+}
+
+/* Sidebar modules for boxing content */
+.sidebar-module {
+    margin: -15px;
+    padding: 15px;
+}
+.sidebar-module + .sidebar-module {
+    margin-top: 30px;
+}
+.sidebar-module-inset {
+    border-radius: 4px;
+}
+.sidebar-module-inset p:last-child,
+.sidebar-module-inset ul:last-child,
+.sidebar-module-inset ol:last-child {
+    margin-bottom: 0;
+}
+
+
+/* Pagination */
+.pager {
+    margin-bottom: 60px;
+    text-align: left;
+}
+.pager > li > a {
+    width: 140px;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 30px;
+}
+
+
+/*
+ * Blog posts
+ */
+.blog-post {
+    margin: -15px;
+    padding: 15px;
+    border-radius: 1em;
+   !background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 1px hsla(0,0%,100%,.3) inset,
+                0 .5em 1em rgba(0, 0, 0, 0.4);
+}
+.blog-post + .blog-post {
+    margin-top: 30px;
+}
+.blog-post-title {
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.bottom-corner{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(-17.32px, -10px) rotate(-30deg);
+}
+.bottom-corner > a.link {
+    color: white;
+}
+.bottom-corner::after{
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    background-color: darkkhaki;
+    transform: translate(-39.32px, -20px);
+    z-index: -1;
+}
+
+.blog-post-meta {
+    color: #333;
+    font-size: 12px;
+    bottom: 0;
+    right: 0;
+}
+
+
+/*
+ * Footer
+ */
+
+.blog-footer {
+    padding: 40px 0;
+    color: #333;
+    text-align: center;
+    background: transparent;
+}
+.blog-footer p:last-child {
+    margin-bottom: 0;
+}
