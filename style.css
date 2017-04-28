@@ -96,13 +96,13 @@ h3{
 	background-color: #f8f8f8;
 	padding: 40px;
 }
-@media screen and (max-width: 901px) { 
+@media screen and (max-width: 992px) { 
 	.side-col{
 		width: 200px;
 		height: auto;
 	}
 } 
-@media screen and (max-width: 500px) { 
+@media screen and (max-width: 768px) { 
 	.container{
 		flex-direction: column;
 	}
@@ -111,6 +111,7 @@ h3{
 		height: auto;
 	}
 	.main-content{
+		width: 100%;
 		height: auto;
 		overflow-x: auto;
 		overflow-y: auto;
