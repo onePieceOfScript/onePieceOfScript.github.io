@@ -111,17 +111,20 @@ h3{
 		height: auto;
 	}
 	.main-content{
+		flex-grow: 0;
 		width: 100%;
 		height: auto;
-		overflow-x: auto;
+		overflow-x: hidden;
 		overflow-y: auto;
 	}
 } 
 
 .PostList{
 	list-style-type: none;
+	width: 100%;
 }
 .PostList > li{
+	width: 100%;
 	position: relative;
 	text-align: center;
 	padding: 2em 0;
@@ -153,6 +156,7 @@ h3{
 	margin-bottom: 16px;
 	color: #141414;
 	transition: all .3s;
+	word-break:break-all;
 }
 .PostList > li .post-meta{
 	font-size: 1.2rem;
