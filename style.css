@@ -17,9 +17,7 @@ h3{
 	display: flex;
 	padding: 0;
 }
-@media{
 
-}
 .side-col{
 	display: flex;
 	align-items: center;
@@ -98,6 +96,26 @@ h3{
 	background-color: #f8f8f8;
 	padding: 40px;
 }
+@media screen and (max-width: 901px) { 
+	.side-col{
+		width: 200px;
+		height: auto;
+	}
+} 
+@media screen and (max-width: 500px) { 
+	.container{
+		flex-direction: column;
+	}
+	.side-col{
+		width: 100%;
+		height: auto;
+	}
+	.main-content{
+		height: auto;
+		overflow-x: auto;
+		overflow-y: auto;
+	}
+} 
 
 .PostList{
 	list-style-type: none;
