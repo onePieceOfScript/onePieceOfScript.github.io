@@ -1,1 +1,100 @@
-<!DOCTYPE html><html lang="en"><head><title>CSS Visual Formatting Model - One Piece Of Script</title><meta charset="utf-8"><link rel="stylesheet" href="css/style.css"></head><body><div class="container"><div class="side-col"><div class="AuthorInfo"><img class="Avatar" src="https://avatars0.githubusercontent.com/u/17768382?v=3&amp;s=460"><h3>One Piece Of Script</h3><p>兴趣使然的前端工程师</p></div><ul class="linklist"><li><a href="../">about</a></li></ul></div><div class="main-content"><h1 class="title">CSS Visual Formatting Model</h1></div></div></body></html>
+<!DOCTYPE html><html lang="zh-cn"><head><title>CSS Visual Formatting Model - One Piece Of Script</title><meta charset="utf-8"><link rel="stylesheet" href="/modest.css"><link rel="stylesheet" href="/style.css"></head><body><div class="container"><div class="side-col"><div class="AuthorInfo"><img class="Avatar" src="https://avatars0.githubusercontent.com/u/17768382?v=3&amp;s=460"><h3>One Piece Of Script</h3><p>兴趣使然的前端工程师</p></div><ul class="linklist"><li><a href="/">home</a></li><li><a href="../">about</a></li></ul></div><div class="main-content page-content"><div class="page-header"><h1 class="title">CSS Visual Formatting Model</h1><ul class="page-meta"><li class="author">Tony Wang</li><li class="date">星期六, 2016 8月 27日 , 下午 5:40</li></ul></div><article class="markdown-body"><p>Visual Formatting Model 描述了UA如何在视觉媒体上操作文档树的。</p>
+<a id="more"></a>
+<hr>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Visual Formatting Model 在文档树中的每个元素都会根据盒子模型生成0到多个盒子。这些盒子的布局是根据：</p>
+<p>1、盒子的尺寸和类型</p>
+<p>2、position （normal flow，float，absolute）</p>
+<p>3、文档树中元素之间的关系</p>
+<p>4、额外的信息（比如：viewport尺寸，图片的内置尺寸等）</p>
+<p>Visual Formatting Model 并未定义到所有的格式信息，比如字符间距并未定义。UA在这些格式上可能会表现的不同。</p>
+<h3 id="ViewPort"><a href="#ViewPort" class="headerlink" title="ViewPort"></a>ViewPort</h3><p>UA对continuous media一般会提供用户一个viewport，用户通过它来访问一个文件。在viewport的尺寸改变时，UA可能会改变文档的布局。当viewport的尺寸小于文档渲染的画布时，UA应该提供一种滚动机制。每个画布最多有一个viewport，但是UA可以渲染多个画布。</p>
+<h3 id="Containing-blocks"><a href="#Containing-blocks" class="headerlink" title="Containing blocks"></a>Containing blocks</h3><p>在CSS2.2中，很多盒子的位置和大小是关于一个叫做Containing block的矩形盒子的边来计算的。通常，生成的盒子都是作为子盒子的容器；我们说一个盒子为子盒子“确立”了一个容器。</p>
+<p>每个盒子的位置是关于它的containing box，但它并不会仅限于盒子之内，可能会溢出。</p>
+<h2 id="控制盒-Controlling-box-的生成"><a href="#控制盒-Controlling-box-的生成" class="headerlink" title="控制盒(Controlling box)的生成"></a>控制盒(Controlling box)的生成</h2><p>一个元素的display属性决定了该元素principal box，principle box包含了子盒子以及其内容，它还可以应用任何的position模式。一些元素也有可能生成除了一个元素的display属性将对该元素 principal box的其他盒子，比如list-item。这些盒子的位置是关于principal box的。</p>
+<h3 id="Block-level-elements-和-block-boxes"><a href="#Block-level-elements-和-block-boxes" class="headerlink" title="Block-level elements 和 block boxes"></a>Block-level elements 和 block boxes</h3><p><em>Block-level elements</em>：在源文档中以可见的形式包裹在标签内的元素。该元素会生成<em>块级</em>的principal box。将display设置为’block’,’list-item’,’table’块级的元素。块级盒子参与了BFC。</p>
+<p>在CSS2.2中，除非一个块级盒子是一个表格盒子或者一个可替换元素的principal box，这个盒子就是一个块容器盒子（block container box）。块容器盒子要么只包含块级盒子，要么生成了一个IFC，IFC只包含内联级盒子。一个元素的principal box是一个块容器盒子则是一个块容器元素（block container element）。能够使得一个非替换元素生成一个块容器的display参数有：’block’,’list-item,’inline-block’。不是所有的块容器盒子都是块级盒子：非替换的内联盒子以及非替换的表格单元是块容器但不是块级。是块级盒子也是块容器的叫做<em>block boxes</em>。</p>
+<p>三种术语：block-level box，block container box，block box有时会在清晰的地方缩写为block。</p>
+<h4 id="匿名block-boxes"><a href="#匿名block-boxes" class="headerlink" title="匿名block boxes"></a>匿名block boxes</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">DIV</span>&gt;</span></div><div class="line">Some text</div><div class="line"><span class="tag">&lt;<span class="name">P</span>&gt;</span>More text</div><div class="line"><span class="tag">&lt;/<span class="name">DIV</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这个DIV中同时包括内联内容及块级内容。为了格式定义简单，我们假设为“some text”添加了一个匿名块。换句话说，如果一个块容器盒子（DIV）包含了一个块级盒子（P），则我们规定它之内只能包含块级盒子。</p>
+<p>当一个内联盒子包含了一个在文档流中的块级盒子，则会打破块级盒子的周围（如果还有块级盒子则继续打破），将这个内联盒子，分解为两个盒子，在块级盒子的两侧。这个内联盒子在打破前后都会包裹在匿名盒子中，块级盒子将会成为这些匿名盒子的兄弟盒子。</p>
+<p>举个例子来说：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">BODY</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">P</span> <span class="attr">style</span>=<span class="string">"display:inline"</span>&gt;</span></div><div class="line">Anonymous text before</div><div class="line"><span class="tag">&lt;<span class="name">SPAN</span> <span class="attr">style</span>=<span class="string">"display:block"</span>&gt;</span>conten of span<span class="tag">&lt;/<span class="name">SPAN</span>&gt;</span></div><div class="line">Anonymous text after</div><div class="line"><span class="tag">&lt;/<span class="name">P</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">BODY</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>P包含了三部分：before，block，after。结果盒子将会是BODY包含了内容为“Anonymous text before”的匿名块，SPAN块，内容为“Anonymous text after”的匿名块，P被打破。</p>
+<p>匿名盒子的属性是从包裹它的非匿名盒子继承的。非继承的属性将应用它们的初始值。生成匿名块的元素属性将依然应用于其生成的匿名盒子及内容之上。比如上面例子如果P设置了边框属性(1px solid red)，则边框属性将会被应用于“Anonymous text before”匿名块的左边和上下边框，“Anonymous text after”右边和上下边框</p>
+<p style="display:inline;border:2px solid red;">Anonymous text before<span style="display:block">conten of span</span>Anonymous text after</p>
+
+<p>但匿名块盒子的子元素需要知道包含它的盒子的高度，来计算它的相对高度，它将会向上使用第一个非匿名盒子的高度而非匿名盒子的高度。所以匿名盒子在计算百分比值的时候将会被忽略。</p>
+<h2 id="内联及元素和内联盒子"><a href="#内联及元素和内联盒子" class="headerlink" title="内联及元素和内联盒子"></a>内联及元素和内联盒子</h2><p>内联元素是在文档树中不生成新内容块的元素，其内容分配在行之中。以下属性值可以让一个元素变为内联：”inline”, “inline-table”, “inline-block”。内联级元素生成内联级盒子(inline-level boxes)，这种盒子参与了IFC。</p>
+<p>一个<em>inline box</em>是内联级的，其内容参与其IFC。一个display:inline的非替换元素生成一个inline box，一个非内联盒子的内联级盒子（比如可替换的内联级元素，inline-block元素，inline-table元素）叫做原子内联级盒子（atomic inline-level boxes），因为它们作为单个的不透明盒子参与了它们的IFC。</p>
+<h3 id="匿名的inline-box"><a href="#匿名的inline-box" class="headerlink" title="匿名的inline box"></a>匿名的inline box</h3><p>在一个块级容器元素中直接包含的文本总是被认为是一个匿名内联元素。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">P</span>&gt;</span></div><div class="line">Anonymous text before</div><div class="line"><span class="tag">&lt;<span class="name">em</span>&gt;</span>conten of em<span class="tag">&lt;/<span class="name">em</span>&gt;</span></div><div class="line">Anonymous text after</div><div class="line"><span class="tag">&lt;/<span class="name">P</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>其中除了em是明显的内联元素外，其余文本都会被称为匿名内联盒子，这些内联盒子是由P生成的。这些匿名内联盒子从他们的父块盒子继承属性，非继承的属性则使用初始值，空格文本将一个个的消除，这些将不会产生匿名内联盒子。表格中将有更多类型的匿名盒子。</p>
+<h2 id="run-in-boxes"><a href="#run-in-boxes" class="headerlink" title="run-in boxes"></a>run-in boxes</h2><p>Todo…</p>
+<p>##Position Schemes<br>在CS2.2中，盒子可能按以下三种模式排列：</p>
+<p>1、Normal flow：包括块级盒子的块格式，内联盒子内联格式，块级和内联级盒子的相对定位。</p>
+<p>2、Floats：在浮动模型中盒子首先按照Normal flow排列，然后从流中取出，尽可能的向左或向右移动，内容可能会贴着浮动流动。</p>
+<p>3、Absolute positioning（绝对位置）：在绝对位置模型中，盒子整个从流中删除，关于容器块定位。</p>
+<p>一个在流之外的元素是float，或者absolute，或者根元素。反之则是流之内的元素。一个元素的流是该元素和所有在流之内的，最近的祖先是该元素的，且该元素不属于流的元素。</p>
+<h2 id="Normal-Flow"><a href="#Normal-Flow" class="headerlink" title="Normal Flow"></a>Normal Flow</h2><p>在normal flow中的盒子都属于一个格式化上下文，可能是表格、块或者内联。</p>
+<h3 id="Block-formatting-contexts"><a href="#Block-formatting-contexts" class="headerlink" title="Block formatting contexts"></a>Block formatting contexts</h3><p>生成BFC的条件：</p>
+<p>1、浮动、绝对定位，是块容器但非块盒子(inline-blocks, table-cell, table-captions)。</p>
+<p>2、块盒子的overflow值不是visible</p>
+<p>在BFC中，盒子垂直的从容器的顶部一个接一个排列。两个兄弟盒子之间的垂直距离取决于margin。在BFC中邻接的块级盒子垂直方向上的margin会collapse。</p>
+<p>另外，在BFC中每个盒子的左侧外部边界会紧贴容器的左边界（如果是右至左的顺序则反之）。这在存在float的情况下依然成立（尽管box的line boxes可能因为浮动收缩），除非盒子创建了一个新的BFC。</p>
+<h3 id="Inline-formatting-contexts"><a href="#Inline-formatting-contexts" class="headerlink" title="Inline formatting contexts"></a>Inline formatting contexts</h3><p>生成IFC的条件：块容器不包含块级盒子。</p>
+<p>在IFC中，盒子水平的从容器顶部一个接一个排列。水平方向的margins，borders，paddings会在这些盒子之间存在。这些盒子的在水平方向上可能会有不同的方式对齐：它们的下边界或上边界对齐，或者是其中文本的基线对齐。所有组成一行的内联盒子包裹在一个叫做line box的矩形区域中。</p>
+<p>line box的宽度取决于容器块，以及是否有浮动。line box的高度取决于行高计算。</p>
+<p>一个line box总是能够容纳所有在它其中的盒子，有时可能比它们都高。当一个盒子的高度小于容纳它的inline box时，该盒子的垂直位置取决于vertical-align属性。当很多内联级盒子不能包含与一个在水平方向上的inline box，它们将会分给两个或多个line box的垂直栈。因此，一个段落是line boxes的垂直栈。堆放着的line boxes无间隙的一个叠着一个。</p>
+<p>通常来说，line box的左侧边界都是紧贴着它的容器的左边界，右侧边界紧贴着它的容器的右边界，但是，浮动盒子将会出现在容器与line box之间。因此，尽管在同一个IFC中line boxes一般具有相同的宽度，它们可能会因为浮动元素而缩减自身的宽度。line boxes的高度可能会因为内容的不同而不同。</p>
+<p>当一行之内的内联级盒子的宽度小于报过它们的line box时，他们在水平方向上的分布取决于text-align属性。如果属性值是justify，则UA也会拉扯字符与空格的间距。</p>
+<p>当一个内联盒子的宽度超过了一个line box，它将被分解到多个盒子中，这些盒子会分配到多个line boxes中。如果一个内联盒子不能分开，比如内联盒子包含了一个长的不带空格的单词（中文貌似不存在这个问题），那么内联盒子就会超出line box。</p>
+<p>当一个内联盒子被分解，margins, borders, padding在分解处不起作用。</p>
+<p>内联盒子在一行之内也可能因为<a href="#bidirectionaltextprocessing">bidirectional text processing</a>被分解为多个盒子。</p>
+<p>line boxes的创造是被用于支持一个IFC中的内联级内容。line box在没有文本，或没有保留的空白，或没有内联级元素的margin，padding，border非0，或没有其他在流中的内容（比如图片，inline-block，inline-table）或者没有以一个保留的新行结束，将会被认为是高度为0的，会被当做没有存在。</p>
+<h3 id="Relative-positioning"><a href="#Relative-positioning" class="headerlink" title="Relative positioning"></a>Relative positioning</h3><p>当一个盒子按照normal flow或者floated排列时，它可能会根据这个位置移动。这被称为<em>relative positioning</em>。在文档中有关系的两个盒子，并不会因为relative positioning影响各自的位置。这也可能导致盒子的重叠。但是，如果想对位置导致了overflow:auto或者overflow:scroll，UA必须允许用户能够查看到这部分内容。</p>
+<p>一个相对定位的盒子将保持原有的尺寸，换行符和空格。</p>
+<p>对于想对定位的元素，left和right水平移动盒子。left = -right。</p>
+<p>如果left:auto, right: auto，则都使用0；</p>
+<p>如果left:auto, 它将被赋予 -right；如果right:auto, 它将被赋予 -left；</p>
+<p>如果left和right都有值，则其中一个会被忽略，这取决于direction属性，ltr将使用left，rtl将使用right。</p>
+<p>top与bottom与right和left类似，只是当都被赋予值得时候，bottom将被忽略。</p>
+<h2 id="Floats"><a href="#Floats" class="headerlink" title="Floats"></a>Floats</h2><p>浮动是指一个盒子在当前行内向左或向右移动。浮动最有意思的特征在于内容可能会沿着它的边界流动（或者可以用clear属性禁用这个特征）。内容会在左侧浮动盒子的右侧流动，反之亦反。</p>
+<p>一个浮动的盒子会移动到左侧会右侧直到碰到容器边界或者另一个浮动块的边界。如果这是一个line box，则浮动盒子的外侧上边界将会和当前line box的上边界对齐。</p>
+<p>如果没有足够的水平空间，浮动盒子将会向下移动直到能够容纳它或者（没有更多的浮动出现？）。</p>
+<p>因为浮动并不在流之内，在浮动盒子之前或之后创建的未定位的block boxes将会当float box不存在。但是，当前和之后的line boxes将会因为浮动盒子的margin盒子缩短，为其腾出空间。</p>
+<p>一个line box邻接一个浮动块的条件是存在一个垂直位置满足下列四个条件：1、在line box的上边界或者下方。2、在line box的下边界或者上方。3、在浮动的上边界之下。4、在浮动的下边界之上。这就是意味着，如果一个float的高度小于等于0将不会缩短line boxes。</p>
+<p>如果一个缩短的line box太小了以至于不能包裹任何内容，那么该line box就会下移，它的宽度会重新计算，直到一些内容能合适或者不再有float出现。在浮动块盒子之前的当前行的任何内容将会在浮动盒子的另一侧重新回流。换句话说就是，如果内联盒子位于一个向左浮动块之前，将会填充剩余的盒子空间，左浮动块会放置于这行之上，与行顶部平齐，然后已经在行内的内联级盒子将会根据左浮动盒子的右侧移动。反之亦反。</p>
+<p>一个table，block-level的替换元素，或者一个在普通流中的元素将会新建一个BFC（比如overflow不是visible的元素）的边界盒子，就元素本身来看，肯定不会与任何在同一个BFC中的浮动盒子的margin边界重叠。如果有必要的话，将对以上所说的元素清除浮动，将其置于任何在它之前浮动的元素之下，但是当有足够空间时，也有可能放置在浮动元素的邻接区域。它们甚至会让以上所说的元素的边界盒子比定义的窄。CSS2并没有定义什么时候UA将以上所说元素放置在浮动块边上，也没有定义这些元素将变得多窄。</p>
+<p>下面的例子中，容器盒子太窄了，不能同时容纳下浮动块和内容文字，因此内容下移，但内容又是属于一个单独的单词类型，所以默认不可分，就超出了边界。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"width: 10em;border:solid aqua; text-indent: 0em;"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"float: left;width: 5em;height: 5em;border:solid blue;margin:1em;"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">	asdakljlkjljlksdasdasdafaflkj</div><div class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p style="width: 10em;border:solid aqua;text-indent: 0em;"><span style="margin:1em;float: left;width: 5em;height: 5em;border:solid blue;"></span>asdakljlkjljlksdasdasdafaflkj</p><br>下面的例子中，浮动可以在普通流中覆盖在其他盒子之上，这种情况下，浮动将会在未定位的流内盒子之前，在流内的内联盒子后渲染。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"width: 45em;border:solid aqua;text-indent: 0em;"</span>&gt;</span></div><div class="line">	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</div><div class="line">	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</div><div class="line">	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</div><div class="line">	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse</div><div class="line">	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non</div><div class="line">	proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </div><div class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"margin:-2em 2em 2em 2em;float: left;width: 5em;height: 5em;border:solid blue;background:red;"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"width: 45em;border:solid aqua;text-indent: 0em;"</span>&gt;</span></div><div class="line">	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</div><div class="line">	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</div><div class="line">	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</div><div class="line">	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse</div><div class="line">	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non</div><div class="line">	proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </div><div class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div></pre></td></tr></table></figure><br><br><p style="width: 45em;border:solid aqua;text-indent: 0em;">    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  </p><span style="margin-top: -2em;margin:-4em 2em 2em 2em;float: left;width: 5em;height: 5em;border:solid blue;background:red;"></span><p style="width: 45em;border:solid aqua;text-indent: 0em;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+
+<h3 id="float属性"><a href="#float属性" class="headerlink" title="float属性"></a>float属性</h3><p>left, right, none。<br>floats的精确规则：</p>
+<p>1、对于向左浮动的元素的左侧outer edge（margin盒子的边界），其边界不应该超过它的容器左边界。右浮动也是如此。</p>
+<p>2、如果当前盒子是向左浮动的，并且在此盒子之前文档中还生成了左浮动的盒子，对于每个这样的盒子，当前盒子的左outer edge必须在之前生成的盒子的右边界的右侧或者它的顶部必须低于前面盒子的底部。右浮动亦是如此。</p>
+<p>3、对于左浮动盒子的右侧外部边界可能并不会顶到临近的右浮动盒子的左侧外边界。右浮动亦是如此。</p>
+<p>4、浮动盒子的外边界的上边界应该不会高过容器的上边界。当浮动发生在两个交融的margin之间，浮动的定位犹如另一个空的匿名块父元素参与进了流中。这个元素的位置定义在margin collapsing章节中。</p>
+<p>5、浮动盒子的上边界应该不会高于文档中在其之前生成的任何块或浮动盒子的上边界。</p>
+<p>6、一个元素的浮动盒子的上边界应该不会高于文档中在其之前生成的任何元素生成的line box。</p>
+<p>7、一个左浮动盒子的左侧做浮动盒子应该令其的右侧外部边界碰触到其容器的右侧边界。</p>
+<p>8、一个浮动盒子必须摆的尽量高。</p>
+<p>9、一个左浮动盒子必须摆的尽量靠左，右浮动尽量靠右。左浮动越靠左的位置越高，右浮动的越靠右位置越高。</p>
+<h3 id="clear属性"><a href="#clear属性" class="headerlink" title="clear属性"></a>clear属性</h3><p>left, right, both, none<br>这个属性指出哪个元素盒子的哪条边界不应该靠近一个它之前浮动盒子。元素自身内部或者在不同的BFC中的clear属性将不会考虑。</p>
+<p>当属性值不为none时，引入clearance概念。clearance抑制边界溶合，表现为元素margin-top之上的空间。这个空间用来推动此元素越过浮动。</p>
+<p>要根据clear计算一个元素的clearance，需要首先确定元素上边界的假设位置。这个位置是clear值为none时，元素会处于的位置。</p>
+<p>假如这个假设的位置没有越过相关的浮动块，则clearance将介入，margins的溶解策略参考8.3.1</p>
+<p>这个clearance的大小将设置为这些中大的那个：</p>
+<p>1、将块的border边界于最下面的被清除的浮动块的下外边界对齐的必要的值。</p>
+<p>2、将块的top边界置于假设位置上的必要的值</p>
+<p>clearance可以是0或者负的。</p>
+<h2 id="Absolute-positioning"><a href="#Absolute-positioning" class="headerlink" title="Absolute positioning"></a>Absolute positioning</h2><p>在绝对位置模型中，一个盒子明确的根据它的容器来定位。它完全从normal flow中移除，也就是对后续的同级元素没有影响。一个绝对定位的盒子建立了一个新的容器，这个容器有自己的normal flow。但是一个绝对定位的元素的内容不会再其他盒子周围流动。它们会掩盖其他盒子的内容，根据叠放的等级。</p>
+<p>绝对定位元素是指position为absolute或者fixed的元素。</p>
+<h3 id="Fixed-positioning"><a href="#Fixed-positioning" class="headerlink" title="Fixed positioning"></a>Fixed positioning</h3><p>Fixed positioning是绝对定位的一个亚类。两者的区别在与该定位的容器是viewport。在continuous media中，fixed box不会随着文档滚动。就像fixed background image。对于page media，它将会出现在每页的同一个位置。盒子大于页面的位置将被裁剪。</p>
+<h2 id="display-position-float的关系"><a href="#display-position-float的关系" class="headerlink" title="display position float的关系"></a>display position float的关系</h2><p>1、如果display的值是none，那么position和float不适用。这时，元素不会产生盒子。</p>
+<p>2、另外，如果position是absolute或者fixed，盒子是绝对定位的，float的计算值是none，display将会根据下面的表格设置。</p>
+<p>3、另外，如果浮动有不是none的值，盒子是浮动的，display将会根据下面的表格设置。</p>
+<p>4、另外，如果元素是根元素，display根据下边设置，除了list-item变成了一个block或者list-item的计算值。</p>
+<p>5、另外，其余的display按照定义设置。</p>
+<table class="table table-bordered table-hover"><tr><td><em>Specified value</em></td><td><em>Computed value</em></td></tr><tr><td>inline-table</td><td>table</td></tr><tr><td>inline,table-row-group,table-column,table-column-group,table-header-group,table-footer-group,table-row,table-cell,table-caption,inline-block</td><td>block</td></tr><tr><td>others</td><td>same as specified</td></tr></table>
+
+
+
+
+</article></div></div></body></html>
