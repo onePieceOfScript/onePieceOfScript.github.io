@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="zh-cn"><head><title>RegExp Cheet Sheet - One Piece Of Script</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><link rel="stylesheet" href="/modest.css"><link rel="stylesheet" href="/style.css"></head><body><div class="container"><div class="side-col"><div class="AuthorInfo"><img class="Avatar" src="https://avatars0.githubusercontent.com/u/17768382?v=3&amp;s=460"><h3>One Piece Of Script</h3><p>Progressive Enhancement</p></div><ul class="linklist"><li><a href="/">home</a></li><li><a href="../">about</a></li></ul></div><div class="main-content page-content"><div class="page-header"><h1 class="title">RegExp Cheet Sheet</h1><ul class="page-meta"><li class="author">Tony Wang</li><li class="date">星期四, 2017 5月 25日 , 下午 12:35</li></ul></div><article class="markdown-body"><p>正则表达式 语法速查</p>
+<a id="more"></a>
+<h2 id="Flags"><a href="#Flags" class="headerlink" title="Flags"></a>Flags</h2><ul>
+<li>i-  case-insensitive</li>
+<li>g-  针对整个字符串</li>
+<li>m-  匹配可跨越多行</li>
+<li>y-  回朔匹配</li>
+<li>u-  忽略Unicode (\u{…})</li>
+</ul>
+<p>Flags可以连用（/test/ig）</p>
+<h2 id="Matching分类"><a href="#Matching分类" class="headerlink" title="Matching分类"></a>Matching分类</h2><h3 id="准确匹配"><a href="#准确匹配" class="headerlink" title="准确匹配"></a>准确匹配</h3><p>/test/ 意思就是准确匹配一个连着一个的字符序列</p>
+<h3 id="匹配到一个集合"><a href="#匹配到一个集合" class="headerlink" title="匹配到一个集合"></a>匹配到一个集合</h3><ul>
+<li>[abc] anything in set</li>
+<li>[^abc] anything but set</li>
+<li>[abcde] === [a-e]</li>
+</ul>
+<h3 id="转义符"><a href="#转义符" class="headerlink" title="转义符"></a>转义符</h3><ul>
+<li>[] 可以表示[];</li>
+</ul>
+<h3 id="开始结束符"><a href="#开始结束符" class="headerlink" title="开始结束符"></a>开始结束符</h3><ul>
+<li>/^test$/</li>
+</ul>
+<h3 id="控制出现次数"><a href="#控制出现次数" class="headerlink" title="控制出现次数"></a>控制出现次数</h3><ul>
+<li>/t?est/ - ? 1或0次</li>
+<li>/t+est/ - + 1次及以上</li>
+<li>/t<em>est/ - </em> 0次及以上</li>
+<li>/t{4}est/ - t{n} n次</li>
+<li>/t{4,10}/ - t{n, m} n到m次</li>
+<li>/t{4,}/   - t{n,} n次及以上</li>
+</ul>
+<p>贪婪？非贪婪？ 贪婪指匹配一直持续到消耗掉所以字符，非贪婪指只要找到符合模式的字符串就行</p>
+<p>Ex. 用/a+/ （贪婪）和/a+?/ （非贪婪）对”aaa”进行匹配，前者会匹配aaa，后者只会匹配a，因为其已经满足了a+条件。</p>
+<h3 id="提前定义好的字符集合"><a href="#提前定义好的字符集合" class="headerlink" title="提前定义好的字符集合"></a>提前定义好的字符集合</h3><ul>
+<li>\t - horizontal tab</li>
+<li>\b - back space</li>
+<li>\v - vertical tab</li>
+<li>\f - form feed（换页符）</li>
+<li>\r - Carriage return（回车）</li>
+<li>\n - new line</li>
+<li>\cA : \cZ - Control characters(Ascii码)</li>
+<li>\u0000 : \uFFFF - Unicode hexadecimal</li>
+<li>\x00 : \xFF - ASCII hexadecimal</li>
+<li>. - Any character, except for whitespace characters (\s)</li>
+<li>\d - Any decimal digit; equivalent to [0-9]</li>
+<li>\D - Any character but a decimal digit; equivalent to [^0-9]</li>
+<li>\w - Any alphanumeric character including underscore; equivalent to [A-Za-z0-9_]</li>
+<li>\W - Any character but alphanumeric and underscore characters; equivalent to [^A-Za-z0-9_]</li>
+<li>\s - Any whitespace character (space, tab, form feed, and so on)</li>
+<li>\S - Any character but a whitespace character</li>
+<li>\b - A word boundary</li>
+<li>\B - Not a word boundary (inside a word)</li>
+</ul>
+<h3 id="编组"><a href="#编组" class="headerlink" title="编组"></a>编组</h3><p>将一个字符序列进行编组，比如/(ab)+/，表示(ab)共同和出现1次以上。<br>编组还有一个功能，就是capture。</p>
+<h3 id="替代组"><a href="#替代组" class="headerlink" title="替代组"></a>替代组</h3><p>比如/(ab)+|(bc)+/，表示(ab)共同出现1次以上，或者(bc)共同出现一次以上的匹配项。</p>
+<h3 id="反向引用"><a href="#反向引用" class="headerlink" title="反向引用"></a>反向引用</h3><p>反向引用针对the captures。比如/^([bdn])a\1/，其中\1就是反向引用，该匹配项只会在运行的时候才知道匹配到什么，比如”bab”能够通过验证，而”ban”就不能通过。</p>
+<p>反向引用的经典例子：匹配XML标签 /&lt;(\w+)&gt;(.+)&lt;\/\1&gt;/，其保证了前后标签对一致。</p>
+<h2 id="exec获取capture"><a href="#exec获取capture" class="headerlink" title="exec获取capture"></a>exec获取capture</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> ((match = tag.exec(html)) !== <span class="literal">null</span>) &#123;...&#125;</div></pre></td></tr></table></figure>
+<h2 id="capture-引用"><a href="#capture-引用" class="headerlink" title="capture 引用"></a>capture 引用</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 驼峰式转连接符</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeconnect</span>(<span class="params">str</span>)</span>&#123;</div><div class="line">	str.replace(<span class="regexp">/([A-Z])/g</span>, <span class="string">"-$1"</span>).toLowerCase();</div><div class="line">&#125;</div><div class="line"><span class="comment">// 连接符转驼峰式</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">upper</span>(<span class="params">all, letter</span>) </span>&#123; <span class="keyword">return</span> letter.toUpperCase();&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeCamel</span>(<span class="params">str</span>)</span>&#123;</div><div class="line">	str.replace(<span class="regexp">/(-[a-z])/g</span>, upper);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="nonCapture编组"><a href="#nonCapture编组" class="headerlink" title="nonCapture编组"></a>nonCapture编组</h2><p>(?: …) 不会被capture，会被pass</p>
+</article></div></div></body></html>

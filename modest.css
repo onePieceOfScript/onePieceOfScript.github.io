@@ -85,7 +85,7 @@ a:active {
 }
 
 html {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 @media screen and (max-width: 32rem) and (min-width: 48rem) {
@@ -104,7 +104,7 @@ html {
 p,
 .modest-p {
   font-size: 1rem;
-  margin-bottom: 1.3rem;
+  margin-bottom: 1rem;
 }
 
 h1,
@@ -128,17 +128,17 @@ h1,
 
 h2,
 .modest-h2 {
-  font-size: 2.827rem;
+  font-size: 1.999rem;
 }
 
 h3,
 .modest-h3 {
-  font-size: 1.999rem;
+  font-size: 1.414rem;
 }
 
 h4,
 .modest-h4 {
-  font-size: 1.414rem;
+  font-size: 1.121rem;
 }
 
 h5,
@@ -180,7 +180,6 @@ h3 {
   border-bottom: 2px solid #fafafa;
   margin-bottom: 1.15rem;
   padding-bottom: .5rem;
-  text-align: center;
 }
 
 blockquote {
