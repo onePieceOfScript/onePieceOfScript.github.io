@@ -1,0 +1,10 @@
+<!DOCTYPE html><html lang="zh-cn"><head><title>使用nodeJs构建websocket服务器。 - One Piece Of Script</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><link rel="stylesheet" href="/modest.css"><link rel="stylesheet" href="/style.css"></head><body><div class="container"><div class="side-col"><div class="AuthorInfo"><img class="Avatar" src="https://avatars0.githubusercontent.com/u/17768382?v=3&amp;s=460"><h3>One Piece Of Script</h3><p>Progressive Enhancement</p></div><ul class="linklist"><li><a href="/">home</a></li><li><a href="../">about</a></li></ul></div><div class="main-content page-content"><div class="page-header"><h1 class="title">使用nodeJs构建websocket服务器。</h1><ul class="page-meta"><li class="author">Tony Wang</li><li class="date">星期二, 2017 5月 30日 , 晚上 8:00</li></ul></div><article class="markdown-body"><p>websocket实现了TCP的全双工通信，这一标准的制定推动了webapp的发展，所以一定要来亲自实现以下它。</p>
+<a id="more"></a>
+<h2 id="websocket的生命周期"><a href="#websocket的生命周期" class="headerlink" title="websocket的生命周期"></a>websocket的生命周期</h2><p>笔者认为websocket的声明周期分为如下几个阶段：</p>
+<ul>
+<li>通过http协议发送upgrade到websocket的请求，通过ws://xxxx。当服务端返回Upgrade头到客户端时，websocket就被打开了。</li>
+<li>当通道打通后，之后的通信都建立在一个一个data-framing上。</li>
+<li>当websocket关闭后，终端会发送一段终止代码以及附上一段信息来描述关闭的情况。</li>
+</ul>
+<h2 id="打开websocket"><a href="#打开websocket" class="headerlink" title="打开websocket"></a>打开websocket</h2><p>当客户端</p>
+</article></div></div></body></html>
