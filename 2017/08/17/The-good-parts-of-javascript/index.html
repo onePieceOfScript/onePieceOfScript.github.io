@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="zh-cn"><head><title>JavaScript The Good Parts阅读笔记 - One Piece Of Script</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><link rel="stylesheet" href="/modest.css"><link rel="stylesheet" href="/style.css"></head><body><div class="container"><div class="side-col"><div class="AuthorInfo"><img class="Avatar" src="https://avatars0.githubusercontent.com/u/17768382?v=3&amp;s=460"><h3>One Piece Of Script</h3><p>Progressive Enhancement</p></div><ul class="linklist"><li><a href="/">home</a></li><li><a href="../">about</a></li></ul></div><div class="main-content page-content"><div class="page-header"><h1 class="title">JavaScript The Good Parts阅读笔记</h1><ul class="page-meta"><li class="author">Tony Wang</li><li class="date">星期四, 2017 8月 17日 , 晚上 11:46</li></ul></div><article class="markdown-body"><p>提炼了一些</p>
+<a id="more"></a>
+<h1 id="Awful-Parts"><a href="#Awful-Parts" class="headerlink" title="Awful Parts"></a>Awful Parts</h1><h2 id="Global-Variables"><a href="#Global-Variables" class="headerlink" title="Global Variables"></a>Global Variables</h2><p>三种方式会创建全局变量：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> foo = value; <span class="comment">// 在任何函数外声明的变量</span></div><div class="line"> </div><div class="line"><span class="built_in">window</span>.foo = value; <span class="comment">// 直接写在window上的变量</span></div><div class="line"></div><div class="line">boo = value <span class="comment">// 没有声明就赋值的变量</span></div></pre></td></tr></table></figure></p>
+<h2 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h2><p>明明没有block作用域却使用block的语法。</p>
+<p>所以最好在函数的一开始来声明所有变量。</p>
+<h2 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h2><p>javascript会尝试自动给程序加分号，但这会导致一些问题。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="comment">//这回导致return后面自动加上分号，以至于返回undefined</span></div><div class="line">&#123;</div><div class="line">  <span class="attr">status</span>: <span class="literal">true</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h2 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h2><p>保留字作为属性名时必须加引号</p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数计算<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">0.1</span> + <span class="number">0.2</span> === <span class="number">0.3</span> <span class="comment">// false</span></div></pre></td></tr></table></figure></p>
+<p>将浮点数放大到整数来计算</p>
+<h2 id="NaN"><a href="#NaN" class="headerlink" title="NaN"></a>NaN</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typeof</span> <span class="literal">NaN</span> === <span class="string">'number'</span> <span class="comment">// 很奇怪吧</span></div><div class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span> <span class="comment">// false</span></div><div class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>) <span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> isNumber = <span class="function"><span class="keyword">function</span> <span class="title">isNumber</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">'number'</span> &amp;&amp; <span class="built_in">isFinite</span>(value);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="可以转换成false的值"><a href="#可以转换成false的值" class="headerlink" title="可以转换成false的值"></a>可以转换成false的值</h2><table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>NaN</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>‘’</td>
+<td>String</td>
+</tr>
+<tr>
+<td>false</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>null</td>
+<td>Object</td>
+</tr>
+<tr>
+<td>undefined</td>
+<td>Undefined</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h2><p>function foo() {}<br>与<br>var foo = function foo() {};<br>是同一种表达</p>
+<p>函数声明遵守变量提升标准。无论函数在哪声明的，他都会被放到scope中的顶端。</p>
+</article></div></div></body></html>
