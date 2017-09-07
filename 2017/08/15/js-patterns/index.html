@@ -7,6 +7,7 @@
 <blockquote>
 <p>When a function object is created, the Function constructor that produces the func- tion object runs some code like this:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.prototype = &#123;<span class="attr">constructor</span>: <span class="keyword">this</span>&#125;;</div></pre></td></tr></table></figure></p>
 </blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line">a.__proto__ === <span class="built_in">Function</span>.prototype <span class="comment">// true</span></div></pre></td></tr></table></figure>
 <p>，另外同时创建两个隐藏属性：函数的运行环境Scope，以及函数体里的代码。</p>
 <blockquote>
 <p>The function object created by a function literal contains a link to that outer context. This is called closure. </p>
